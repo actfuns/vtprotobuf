@@ -28,6 +28,7 @@ func main() {
 	f.Var(&cfg.Poolable, "pool", "use memory pooling for this object")
 	f.Var(&cfg.PoolableExclude, "pool-exclude", "do not use memory pooling for this object")
 	f.Var(&cfg.IgnoreUnknownFields, "ignoreUnknownFields", "ignore unknown fields instead of saving them")
+	f.BoolVar(&cfg.PreserveNilMapValue, "preserveNilMapValue", false, "preserve nil values in message maps")
 	f.BoolVar(&cfg.Wrap, "wrap", false, "generate wrapper types")
 	f.StringVar(&features, "features", "all", "list of features to generate (separated by '+')")
 	f.StringVar(&cfg.BuildTag, "buildTag", "", "the go:build tag to set on generated files")

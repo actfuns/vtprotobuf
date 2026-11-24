@@ -1,0 +1,14 @@
+syntax = "proto3";
+option go_package = "testproto/preserve_nil_map_value";
+
+message Item {
+  int64 value = 1;
+  string name = 2;
+}
+
+message Maps {
+  map<int32, Item> int_items = 1;
+  map<string, Item> string_items = 2;
+  map<int32, int32> ints = 3;
+  map<string, string> strings = 4;
+}

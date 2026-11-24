@@ -67,6 +67,13 @@ gen-testproto: get-grpc-testproto gen-wkt-testproto install
 		testproto/unique/unique.proto \
 		|| exit 1;
 	$(PROTOBUF_ROOT)/src/protoc \
+		--proto_path=. \
+		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \
+		--go-vtproto_out=. --plugin protoc-gen-go-vtproto="${GOBIN}/protoc-gen-go-vtproto" \
+		--go-vtproto_opt=preserveNilMapValue=true \
+		testproto/preserve_nil_map_value/preserve_nil_map_value.proto \
+		|| exit 1;
+	$(PROTOBUF_ROOT)/src/protoc \
 		--proto_path=testproto \
 		--proto_path=include \
 		--go_out=. --plugin protoc-gen-go="${GOBIN}/protoc-gen-go" \

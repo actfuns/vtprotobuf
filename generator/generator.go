@@ -58,6 +58,8 @@ type Config struct {
 	PoolableExclude ObjectSet
 	// IgnoreUnknownFields contains messages for which unknown fields shall be ignored
 	IgnoreUnknownFields ObjectSet
+	// PreserveNilMapValue preserves nil values in message maps
+	PreserveNilMapValue bool
 	Wrap                bool
 	WellKnownTypes      bool
 	AllowEmpty          bool

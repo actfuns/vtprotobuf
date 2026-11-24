@@ -390,8 +390,15 @@ func (p *marshal) field(oneof bool, numGen *counter, field *protogen.Field) {
 			p.P(`baseI := i`)
 
 			accessor := `v`
-			p.mapField(field.Message.Fields[1], accessor)
-			p.encodeKey(2, generator.ProtoWireType(valKind))
+			if valKind == protoreflect.MessageKind && p.Config.PreserveNilMapValue {
+				p.P(`if v != nil {`)
+				p.mapField(field.Message.Fields[1], accessor)
+				p.encodeKey(2, generator.ProtoWireType(valKind))
+				p.P(`}`)
+			} else {
+				p.mapField(field.Message.Fields[1], accessor)
+				p.encodeKey(2, generator.ProtoWireType(valKind))
+			}
 
 			p.mapField(field.Message.Fields[0], val)
 			p.encodeKey(1, generator.ProtoWireType(keyKind))

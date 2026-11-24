@@ -203,8 +203,13 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 				p.P(`l = 0`)
 				p.P(`if v != nil {`)
 				p.messageSize("v", sizeName, field.Message.Fields[1].Message)
+				if p.Config.PreserveNilMapValue {
+					p.P(`l += `, strconv.Itoa(valueKeySize), ` + `, p.Helper("SizeOfVarint"), `(uint64(l))`)
+				}
 				p.P(`}`)
-				p.P(`l += `, strconv.Itoa(valueKeySize), ` + `, p.Helper("SizeOfVarint"), `(uint64(l))`)
+				if !p.Config.PreserveNilMapValue {
+					p.P(`l += `, strconv.Itoa(valueKeySize), ` + `, p.Helper("SizeOfVarint"), `(uint64(l))`)
+				}
 				sum = append(sum, `l`)
 			}
 			mapEntrySize := []interface{}{"mapEntrySize := "}
@@ -269,7 +274,7 @@ func (p *size) field(oneof bool, field *protogen.Field, sizeName string) {
 	// See https://github.com/planetscale/vtprotobuf/issues/61
 	// Size is always keysize + 1 so just hardcode that here
 	if oneof && field.Desc.Kind() == protoreflect.MessageKind && !field.Desc.IsMap() && !field.Desc.IsList() {
-		p.P("} else { n += ", strconv.Itoa(key + 1), " }")
+		p.P("} else { n += ", strconv.Itoa(key+1), " }")
 	} else if repeated || nullable {
 		p.P(`}`)
 	}
